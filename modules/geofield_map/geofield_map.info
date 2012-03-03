@@ -1,5 +1,5 @@
 name = Geofield Map
-description = Provides a basic mapping interface for Geofields.
+description = Provides a basic mapping interface for Geofield.
 core = 7.x
 dependencies[] = geofield
 
