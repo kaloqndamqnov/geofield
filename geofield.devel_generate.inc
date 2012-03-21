@@ -57,7 +57,7 @@ function _dd_generate($min, $max, $int = FALSE) {
     $func = 'mt_rand';
   }
   $number = $func($min, $max);
-  if ($int) {
+  if ($int || abs($number) === 180) {
     return $number;
   }
   $decimals = $func(1, pow(10, 5)) / pow(10, 5);
