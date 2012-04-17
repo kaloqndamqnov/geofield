@@ -135,10 +135,11 @@ class geofield_map_plugin_style_map extends views_plugin_style {
       }
 
       $map_settings = geofield_map_settings_do($style_options);
+      $map_id = drupal_html_id('geofield_map_' . $this->view->name . '_' . $this->view->current_display);
 
       $js_settings = array(
-        $this->view->name . '_' . $this->view->current_display => array(
-          'map_id' => 'geofield_map_' . $this->view->name . '_' . $this->view->current_display,
+        $map_id => array(
+          'map_id' => $map_id,
           'map_settings' => $map_settings,
           'data' => $data,
         ),
@@ -161,6 +162,6 @@ class geofield_map_plugin_style_map extends views_plugin_style {
       $height = $style_options['geofield_map_height'];
     }
 
-    return '<div style="width: ' . $width . '; height: ' . $height . '" id="geofield_map_' . $this->view->name . '_' . $this->view->current_display . '" class="geofieldMap">' . $style_options['alt_text'] . '</div>';
+    return '<div style="width: ' . $width . '; height: ' . $height . '" id="' . $map_id . '" class="geofieldMap">' . $style_options['alt_text'] . '</div>';
   }
 }
