@@ -83,7 +83,7 @@ class geofield_map_plugin_style_map extends views_plugin_style {
         '#options' => $popup_source_options,
         '#default_value' => $this->options['popup_source'] ? $this->options['popup_source'] : '',
       );
-      
+
       $form['alt_text'] = array(
         '#type' => 'textarea',
         '#title' => t('Alternate Text'),
@@ -99,7 +99,7 @@ class geofield_map_plugin_style_map extends views_plugin_style {
    * Renders views (map)
    */
   function render() {
-    geofield_load_geophp();
+    geophp_load();
     $style_options = $this->view->style_plugin->options;
 
     $geo_data = (!empty($style_options['data_source'])) ? 'field_' . $style_options['data_source']: NULL;
@@ -125,7 +125,7 @@ class geofield_map_plugin_style_map extends views_plugin_style {
 
       if (count($data) == 1) {
         $data = $data[0];
-      } 
+      }
       elseif (count($data) > 1) {
         $tmp = $data;
         $data = array(
