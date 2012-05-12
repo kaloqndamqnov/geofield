@@ -75,7 +75,7 @@ function geofield_map_field_formatter_view($entity_type, $entity, $field, $insta
     $js_settings = array(
       $map_id => array(
         'map_settings' => $map_settings,
-        'data' => count($data == 1) ?
+        'data' => count($data) == 1 ?
           $data[0] :
           array( 'type' => 'GeometryCollection', 'geometries' => $data),
 
