@@ -201,24 +201,35 @@ function geofield_field_widget_form(&$form, &$form_state, $field, $instance,
   }
 
   if ($widget['type'] == 'geofield_openlayers') {
-    drupal_add_js(
-      array('geofield' => array(
-        'data_storage' => (!empty($settings['data_storage'])) ? $settings['data_storage'] : 'collection',
-        ),
-      ),
-    'setting');
-
-    $field_class = '.field-name-' . str_replace('_', '-', $field['field_name']);
-    $defaults = array();
-    $element['helpmap'] = array(
-      '#markup' => '<div class="form-item geotaxonomy-latlon-helpmap" style="display:block">'
-                      . geofield_form_latlon_map($defaults, isset($instance['widget']['settings']['openlayers_map']) ? $instance['widget']['settings']['openlayers_map'] : 'geofield_widget_map')
-                      . '</div>'
-    );
-    $element['helpmap_desc'] = array(
-      '#markup' => t('<div class="description geofield-help">Use the icons to select what type of feature to draw. Each map can contain one simple feature. Pan and zoom with arrows and the zoom bar.</div>')
-    );
+    $openlayers_map_id = isset($instance['widget']['settings']['openlayers_preset']) ? $instance['widget']['settings']['openlayers_preset'] : 'geofield_widget_map';
+    $element['#openlayers_mapname'] = $openlayers_map_id;
+    $element['#after_build']= array('geofield_widget_openlayers_afterbuild');
   }
+
+  return $element;
+}
+
+/**
+ * Callback for afterbuild for widget for js addition to
+ */
+
+function geofield_widget_openlayers_afterbuild($element, &$form_state) {
+  drupal_add_js(
+    array('geofield' => array(
+      'data_storage' => (!empty($settings['data_storage'])) ? $settings['data_storage'] : 'collection',
+      ),
+    ),
+  'setting');
+
+  $defaults = array();
+  $element['helpmap'] = array(
+    '#markup' => '<div class="form-item geotaxonomy-latlon-helpmap" style="display:block">'
+                   . geofield_form_latlon_map(array(), $element['#openlayers_mapname'])
+                   . '</div>');
+
+  $element['helpmap_desc'] = array(
+    '#markup' => t('<div class="description geofield-help">Use the icons to select what type of feature to draw. Each map can contain one simple feature. Pan and zoom with arrows and the zoom bar.</div>')
+  );
 
   return $element;
 }

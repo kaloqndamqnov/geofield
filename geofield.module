@@ -67,7 +67,7 @@ function geofield_field_presave($entity_type, $entity, $field, $instance, $langc
 }
 
 /**
- * Implements hook_content_is_empty().
+ * Implements hook_field_is_empty().
  */
 function geofield_field_is_empty($item, $field) {
   // TODO: This is ugly. Please fix.
