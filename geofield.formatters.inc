@@ -331,7 +331,7 @@ function _geofield_openlayers_formatter($map_name, $items) {
   foreach ($items as $delta) {
     $features[] = array(
       'wkt' => $delta['wkt'],
-      'projection' => '4326',
+      'projection' => 'EPSG:4326',
     );
   }
 
@@ -365,7 +365,7 @@ function _geofield_def_list_formatter($item, $settings) {
   $geometry = geoPHP::load($item['wkt'], 'wkt');
 
   // Single types
-  $single_types = array('Point', 'LineStrnig', 'Polygon');
+  $single_types = array('Point', 'LineString', 'Polygon');
 
   if (in_array($geometry->geometryType(), $single_types)) {
     $centroid = new Point($item['lon'], $item['lat']);
