@@ -212,8 +212,11 @@ function geofield_field_widget_form(&$form, &$form_state, $field, $instance,
 /**
  * Callback for afterbuild for widget for js addition to
  */
-
 function geofield_widget_openlayers_afterbuild($element, &$form_state) {
+  $instance = field_widget_instance($element, $form_state);
+  $widget = $instance['widget'];
+  $settings = $widget['settings'];
+
   drupal_add_js(
     array('geofield' => array(
       'data_storage' => (!empty($settings['data_storage'])) ? $settings['data_storage'] : 'collection',
