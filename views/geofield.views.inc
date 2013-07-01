@@ -60,6 +60,8 @@ function geofield_field_views_data($field) {
 }
 
 /**
+ * Implements hook proximity_views_handlers().
+ *
  * Returns metainfo about each of the geofield proximity views classes.
  */
 
@@ -106,7 +108,7 @@ function geofield_proximity_views_handlers() {
  */
 
 function geofield_proximity_load_plugin($plugin) {
-  $handlers = geofield_proximity_views_handlers();
+  $handlers = module_invoke_all('proximity_views_handlers');
   module_load_include('inc', 'geofield', 'views/proximity_plugins/geofieldProximityManual');
   module_load_include('inc', 'geofield', 'views/proximity_plugins/' . $handlers[$plugin]['class']);
   if (class_exists($handlers[$plugin]['class'])) {
