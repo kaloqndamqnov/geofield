@@ -64,9 +64,10 @@ function geofield_field_update_field($field, $prior_field, $has_data) {
  */
 
 function geofield_field_update_instance($instance, $prior_instance) {
-  if ($instance['widget']['type'] != $prior_instance['widget']['type']) {
+  if (!empty($instance['widget']['type']) && !empty($prior_instance['widget']['type']) && $instance['widget']['type'] != $prior_instance['widget']['type']) {
     $instance['default_value'] = array();
-    field_update_instance($instance);
+    _field_write_instance($instance, TRUE);
+    field_cache_clear();
   }
 }
 
