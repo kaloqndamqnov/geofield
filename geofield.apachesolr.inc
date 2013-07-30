@@ -38,14 +38,19 @@ function geofield_apachesolr_field_mappings() {
 function geofield_apachesolr_indexing_callback($entity, $field_name, $index_key, $field_info) {
   $fields = array();
   if (!empty($entity->{$field_name})) {
-    $field = $entity->$field_name;
-    list($lang, $values) = each($field);
+    $values = $entity->{$field_name}[LANGUAGE_NONE];
+
+    // If there is no geometry, just return
+    if (empty($values[0]['geom'])) {
+      return $fields;
+    }
 
     // Store multiple geometries in a multi-valued Solr field.
-    foreach ($values as $value) {
+    $geometries = array();
+    foreach ($values as $delta => $item) {
       $fields[] = array(
         'key' => $index_key,
-        'value' => $value['lat'] . ',' . $value['lon'],
+        'value' => $item['lat'] . ',' . $item['lon'],
       );
     }
 
@@ -66,11 +71,10 @@ function geofield_apachesolr_indexing_callback($entity, $field_name, $index_key,
         // Format the value to be indexed.
         $formated_value = $centroid->y() . ',' . $centroid->x();
       }
-
-      // There is no need for addition computation of a single point.
+      // There is no need for addition computation of a single item.
       else {
-        $value = reset($values);
-        $formated_value = $value['lat'] . ',' . $value['lon'];
+        $item = reset($values);
+        $formated_value = $item['lat'] . ',' . $item['lon'];
       }
 
       // Get the field info and make it singular.
