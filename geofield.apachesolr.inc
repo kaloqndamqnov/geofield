@@ -46,7 +46,6 @@ function geofield_apachesolr_indexing_callback($entity, $field_name, $index_key,
     }
 
     // Store multiple geometries in a multi-valued Solr field.
-    $geometries = array();
     foreach ($values as $delta => $item) {
       $fields[] = array(
         'key' => $index_key,
@@ -71,7 +70,7 @@ function geofield_apachesolr_indexing_callback($entity, $field_name, $index_key,
         // Format the value to be indexed.
         $formated_value = $centroid->y() . ',' . $centroid->x();
       }
-      // There is no need for addition computation of a single item.
+      // There is no need for additional computation of a single item.
       else {
         $item = reset($values);
         $formated_value = $item['lat'] . ',' . $item['lon'];
