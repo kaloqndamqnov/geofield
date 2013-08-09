@@ -107,8 +107,12 @@ function geofield_update_7100() {
   $fields = field_info_fields();
   foreach ($fields as $field_name => $field) {
     if ($field['type'] == 'geofield' && $field['storage']['type'] == 'field_sql_storage') {
-      // get new schema
-      $schema = geofield_field_schema(array());
+      
+      $srid_schema = array(
+        'type' => 'text',
+        'not null' => FALSE,
+      );
+
       foreach ($field['storage']['details']['sql'] as $type => $table_info) {
         foreach ($table_info as $table_name => $columns) {
           $column_name = _field_sql_storage_columnname($field_name, 'srid');
@@ -117,7 +121,7 @@ function geofield_update_7100() {
             ->fields('f', array($column_name, 'entity_type', 'bundle', 'entity_id'))
             ->execute()
             ->fetchAssoc();
-          db_change_field($table_name, $column_name, $column_name, $schema['columns']['srid']);
+          db_change_field($table_name, $column_name, $column_name, $srid_schema);
           if (!empty($values)) {
             // Put the values back as text
             foreach ($values as $value) {
