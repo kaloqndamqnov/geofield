@@ -290,7 +290,7 @@ function geofield_field_presave($entity_type, $entity, $field, $instance, $langc
     // We then pass the geometry object (now stored in the geom column) to the backend to prepare it for insertion into the database
     foreach ($items as $delta => $item) {
       $items[$delta] = geofield_compute_values($item);
-      if ($items[$delta]['geom']) {
+      if (isset($items[$delta]['geom']) && $items[$delta]['geom']) {
         $items[$delta]['geom'] = $save_callback($items[$delta]['geom']);
       }
     }
