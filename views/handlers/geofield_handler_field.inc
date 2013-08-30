@@ -52,6 +52,11 @@ class geofield_handler_field extends views_handler_field_numeric {
       '#description' => t('How do you want to enter your origin point?'),
       '#options' => array(),
       '#default_value' => $this->options['source'],
+      '#attached' => array(
+        'js' => array(
+          drupal_get_path('module', 'geofield') . '/js/viewsProximityValue.js',
+        ),
+      ),
     );
 
     $proximityHandlers = module_invoke_all('proximity_views_handlers');
