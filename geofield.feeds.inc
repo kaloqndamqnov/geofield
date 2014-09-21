@@ -164,12 +164,12 @@ function geofield_set_target_wkt($source, $entity, $target, $value) {
 
   if (is_array($value)) {
     foreach ($value as $key => $wkt) {
-      $field = array('wkt' => $wkt);
+      $field = array('geom' => $wkt);
       $geofield_values[] = geofield_compute_values($field, 'wkt');
     }
   }
   else {
-    $field = array('wkt' => $value);
+    $field = array('geom' => $value);
     $geofield_values[] = geofield_compute_values($field, 'wkt');
   }
 
