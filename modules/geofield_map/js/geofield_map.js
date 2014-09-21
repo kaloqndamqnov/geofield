@@ -91,10 +91,16 @@
             }
           }
 
-          if (resetZoom) {
-            map.fitBounds(range);
+         for (first in features) break;
+         if (first!='type') {
+            if (resetZoom) {
+              map.fitBounds(range);
+            } else {
+              map.setCenter(range.getCenter());
+            }
           } else {
-            map.setCenter(range.getCenter());
+            var center = map_settings.center;
+            map.setCenter(new google.maps.LatLng(center.lat, center.lon));
           }
         }
         

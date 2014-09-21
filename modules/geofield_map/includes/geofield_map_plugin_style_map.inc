@@ -37,6 +37,7 @@ class geofield_map_plugin_style_map extends views_plugin_style {
     $options['geofield_map_scrollwheel'] = array('default' => 0);
     $options['geofield_map_draggable'] = array('default' => 0);
     $options['geofield_map_streetview_show'] = array('default' => 0);
+    $options['geofield_map_center'] = array('default' => '0,0');
     $options['icon'] = array('default' => '');
     return $options;
   }
@@ -126,6 +127,9 @@ class geofield_map_plugin_style_map extends views_plugin_style {
         }
       }
 
+      if(!$data && !$style_options['geofield_map_center']){
+        return;
+      }
       if (count($data) == 1) {
         $data = $data[0];
       }

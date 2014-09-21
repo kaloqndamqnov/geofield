@@ -38,6 +38,10 @@ function geofield_map_field_formatter_info() {
         'geofield_map_scrollwheel' => 0,
         'geofield_map_draggable' => 0,
         'geofield_map_streetview_show' => 0,
+        'geofield_map_center' => array(
+          'lat' => 0,
+          'lon' => 0
+        ),
       ),
     ),
   );
@@ -163,6 +167,9 @@ function geofield_map_field_formatter_settings_summary($field, $instance, $view_
   if ($settings['geofield_map_streetview_show']) {
     $summary[] = t('Show streetview button: @yn', array('@yn' => ($settings['geofield_map_streetview_show'] ? 'Yes' : 'No')));
   }
+  if ($settings['geofield_map_center']) {
+    $summary[] = t('Default center: @yn', array('@yn' => ($settings['geofield_map_center'] ? 'Yes' : 'No')));
+  }
 
   return implode('<br />', $summary);
 
@@ -186,6 +193,14 @@ function geofield_map_settings_form($settings, $element = array()) {
     '#maxlength' => 25,
     '#description' => t('The default height of a Google map, as a CSS length or percentage. Examples: <em>50px</em>, <em>5em</em>, <em>2.5in</em>, <em>95%</em>'),
     '#required' => TRUE,
+  );
+  $element['geofield_map_center'] = array(
+    '#type' => 'geofield_latlon',
+    '#title' => t('Default Center'),
+    '#default_value' => $settings['geofield_map_center'],
+    '#size' => 25,
+    '#description' => t('If there are no entries on the map, where should the map be centered?'),
+    '#geolocation' => TRUE
   );
   $element['geofield_map_zoom'] = array(
     '#type' => 'select',
@@ -340,6 +355,7 @@ function geofield_map_settings_do($settings) {
     'scrollwheel' => $settings['geofield_map_scrollwheel'],
     'draggable' => $settings['geofield_map_draggable'],
     'streetview_show' => $settings['geofield_map_streetview_show'],
+    'center' => $settings['geofield_map_center'],
   );
   return $map_settings;
 
