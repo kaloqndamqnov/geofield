@@ -23,6 +23,8 @@ class geofield_map_plugin_style_map extends views_plugin_style {
     $options['geofield_map_width'] = array('default' => '100%');
     $options['geofield_map_height'] = array('default' => '300px');
     $options['geofield_map_zoom'] = array('default' => '8');
+    $options['geofield_map_min_zoom'] = array('default' => 0);
+    $options['geofield_map_max_zoom'] = array('default' => 0);
     $options['geofield_map_controltype'] = array('default' => 'default');
     $options['geofield_map_mtc'] = array('default' => 'standard');
     $options['geofield_map_pancontrol'] = array('default' => 1);

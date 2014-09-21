@@ -45,6 +45,8 @@
 
           var myOptions = {
             zoom: parseInt(map_settings.zoom),
+            minZoom: parseInt(map_settings.min_zoom),
+            maxZoom: parseInt(map_settings.max_zoom),
             mapTypeId: maptype,
             mapTypeControl: (mtc ? true : false),
             mapTypeControlOptions: {style: mtc},
