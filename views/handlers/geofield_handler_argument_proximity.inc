@@ -198,12 +198,13 @@ class geofield_handler_argument_proximity extends views_handler_argument {
   }
 
   private function getDefaultLatLonDist() {
-    return $default_arg = $this->get_default_argument()
+    $default_arg = $this->get_default_argument();
+    return $default_arg
       ? array_filter(preg_split(GEOFIELD_PROXIMITY_REGEXP_PATTERN, $default_arg))
       : array();
   }
 
-  private function getDefaultDist() {
+  public function getDefaultDist() {
     if (!empty($this->options['proximity']['default_radius'])) {
       return $this->options['proximity']['default_radius'];
     }
