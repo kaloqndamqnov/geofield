@@ -32,7 +32,7 @@ class GeofieldBackendDefault extends GeofieldBackendBase {
    * {@inheritdoc}
    */
   public function save($geometry) {
-    $geom = \Drupal::service('geophp.geophp')->load($geometry);
+    $geom = \Drupal::service('geofield.geophp')->load($geometry);
     return $geom->out('wkt');
   }
 
@@ -40,6 +40,6 @@ class GeofieldBackendDefault extends GeofieldBackendBase {
    * {@inheritdoc}
    */
   public function load($value) {
-    return \Drupal::service('geophp.geophp')->load($value);
+    return \Drupal::service('geofield.geophp')->load($value);
   }
 }

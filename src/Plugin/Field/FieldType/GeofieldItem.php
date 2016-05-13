@@ -203,7 +203,7 @@ class GeofieldItem extends FieldItemBase {
    * Populates computed variables.
    */
   protected function populateComputedValues() {
-    $geom = \Drupal::service('geophp.geophp')->load($this->value);
+    $geom = \Drupal::service('geofield.geophp')->load($this->value);
 
     if (!empty($geom)) {
       $centroid = $geom->getCentroid();

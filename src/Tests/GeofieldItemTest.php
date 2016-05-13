@@ -65,7 +65,7 @@ class GeofieldItemTest extends FieldUnitTestBase {
     $this->assertEqual($entity->geofield_field->value, $value);
 
     // Test computed values.
-    $geom = \Drupal::service('geophp.geophp')->load($value);
+    $geom = \Drupal::service('geofield.geophp')->load($value);
     if (!empty($geom)) {
       $centroid = $geom->getCentroid();
       $bounding = $geom->getBBox();

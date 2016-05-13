@@ -50,7 +50,7 @@ class GeoConstraint extends Constraint implements ConstraintValidatorInterface {
       $valid_geometry = TRUE;
 
       try {
-        if (!\Drupal::service('geophp.geophp')->load($value, 'wkt')) {
+        if (!\Drupal::service('geofield.geophp')->load($value, 'wkt')) {
           $valid_geometry = FALSE;
         }
       }

@@ -4,5 +4,3 @@ description: Stores geographic and location data (points, lines, and polygons).
 package: Field types
 version: 8.1-dev
 core: 8.x
-dependencies:
-  - geophp
