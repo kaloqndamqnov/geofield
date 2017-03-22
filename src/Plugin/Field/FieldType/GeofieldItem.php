@@ -33,6 +33,7 @@ class GeofieldItem extends FieldItemBase {
     return array(
       'backend' => 'geofield_backend_default',
     ) + parent::defaultInstanceSettings();
+
   }
 
   /**
@@ -171,10 +172,10 @@ class GeofieldItem extends FieldItemBase {
 
     $element['backend'] = array(
       '#type' => 'select',
-      '#title' => t('Storage Backend'),
+      '#title' => $this->t('Storage Backend'),
       '#default_value' => $this->getSetting('backend'),
       '#options' => $backend_options,
-      '#description' => t("Select the Geospatial storage backend you would like to use to store geofield geometry data. If you don't know what this means, select 'Default'."),
+      '#description' => $this->t("Select the Geospatial storage backend you would like to use to store geofield geometry data. If you don't know what this means, select 'Default'."),
     );
 
     return $element;

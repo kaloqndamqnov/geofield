@@ -43,7 +43,7 @@ class GeofieldDefaultFormatter extends FormatterBase {
     unset($options['google_geocode']);
 
     $elements['output_format'] = array(
-      '#title' => t('Output Format'),
+      '#title' => $this->t('Output Format'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('output_format'),
       '#options' => $options,
@@ -58,7 +58,7 @@ class GeofieldDefaultFormatter extends FormatterBase {
   public function settingsSummary() {
     $formatOptions = \Drupal::service('geofield.geophp')->getAdapterMap();
     $summary = array();
-    $summary[] = t('Geospatial output format: @format', array('@format' => $formatOptions[$this->getSetting('output_format')]));
+    $summary[] = $this->t('Geospatial output format: @format', array('@format' => $formatOptions[$this->getSetting('output_format')]));
     return $summary;
   }
 
