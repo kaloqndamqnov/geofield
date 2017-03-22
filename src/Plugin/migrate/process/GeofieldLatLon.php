@@ -23,6 +23,7 @@ class GeofieldLatLon extends ProcessPluginBase {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+    $value = array_map('floatval', $value);
     list($lat, $lon) = $value;
 
     if (empty($lat) || empty($lon)) {
