@@ -9,7 +9,7 @@ namespace Drupal\geofield\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Validation constraint for geospatial values.
@@ -24,7 +24,7 @@ class GeoConstraint extends Constraint implements ConstraintValidatorInterface {
   public $message = '"@value" is not a valid geospatial content.';
 
   /**
-   * @var \Symfony\Component\Validator\ExecutionContextInterface
+   * @var \Symfony\Component\Validator\Context\ExecutionContextInterface
    */
   protected $context;
 
