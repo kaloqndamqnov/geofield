@@ -29,24 +29,24 @@ class GeofieldBoundsWidget extends WidgetBase {
    *
    * @var array
    */
-  public $components = array('top', 'right', 'bottom', 'left');
+  public $components = ['top', 'right', 'bottom', 'left'];
 
   /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $bounds_value = array();
+    $bounds_value = [];
 
     foreach ($this->components as $component) {
       $bounds_value[$component] = isset($items[$delta]->{$component}) ? floatval($items[$delta]->{$component}) : '';
     }
 
-    $element += array(
+    $element += [
       '#type' => 'geofield_bounds',
       '#default_value' => $bounds_value,
-    );
+    ];
 
-    return array('value' => $element);
+    return ['value' => $element];
   }
 
   /**
@@ -61,13 +61,13 @@ class GeofieldBoundsWidget extends WidgetBase {
         }
       }
       $components = $value['value'];
-      $bounds = array(
-        array($components['right'], $components['top']),
-        array($components['right'], $components['bottom']),
-        array($components['left'], $components['bottom']),
-        array($components['left'], $components['top']),
-        array($components['right'], $components['top']),
-      );
+      $bounds = [
+        [$components['right'], $components['top']],
+        [$components['right'], $components['bottom']],
+        [$components['left'], $components['bottom']],
+        [$components['left'], $components['top']],
+        [$components['right'], $components['top']],
+      ];
 
       $values[$delta]['value'] = \Drupal::service('geofield.wkt_generator')->WktBuildPolygon($bounds);
     }

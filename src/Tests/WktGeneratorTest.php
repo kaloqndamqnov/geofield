@@ -68,9 +68,9 @@ class WktGeneratorTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = array(
+  public static $modules = [
     'geofield',
-  );
+  ];
 
   /**
    * {@inheritdoc}
@@ -84,7 +84,7 @@ class WktGeneratorTest extends KernelTestBase {
    * Tests the generation of WKT points and multipoints.
    */
   public function testPoint() {
-    $point = $this->wkt_generator->WktGeneratePoint(array('3', '4'));
+    $point = $this->wkt_generator->WktGeneratePoint(['3', '4']);
     $this->assertEqual('POINT (3 4)', $point, 'Point generated properly');
 
     $point = $this->wkt_generator->WktGeneratePoint();
@@ -104,7 +104,7 @@ class WktGeneratorTest extends KernelTestBase {
     $match = preg_match($this->linestring_regex, $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
-    $linestring = $this->wkt_generator->WktGenerateLinestring(array(7.34, -45.66));
+    $linestring = $this->wkt_generator->WktGenerateLinestring([7.34, -45.66]);
     $match = preg_match('/^LINESTRING \(7.34 -45.66, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/', $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
@@ -112,7 +112,7 @@ class WktGeneratorTest extends KernelTestBase {
     $match = preg_match('/^LINESTRING \(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){8}[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/', $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
-    $linestring = $this->wkt_generator->WktGenerateLinestring(array(7, 45), 6);
+    $linestring = $this->wkt_generator->WktGenerateLinestring([7, 45], 6);
     $match = preg_match('/^LINESTRING \(7 45, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){4}[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/', $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
@@ -129,7 +129,7 @@ class WktGeneratorTest extends KernelTestBase {
     $match = preg_match($this->polygon_regex, $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
-    $polygon = $this->wkt_generator->WktGeneratePolygon(array(7.34, -45.66));
+    $polygon = $this->wkt_generator->WktGeneratePolygon([7.34, -45.66]);
     $match = preg_match('/^POLYGON \(\(7.34 -45.66, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*7.34 -45.66\)\)$/', $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
@@ -137,7 +137,7 @@ class WktGeneratorTest extends KernelTestBase {
     $match = preg_match('/^POLYGON \(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){9}[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)$/', $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
-    $polygon = $this->wkt_generator->WktGeneratePolygon(array(7, 45), 6);
+    $polygon = $this->wkt_generator->WktGeneratePolygon([7, 45], 6);
     $match = preg_match('/^POLYGON \(\(7 45, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){5}7 45\)\)$/', $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
@@ -152,14 +152,14 @@ class WktGeneratorTest extends KernelTestBase {
   public function testRandomGeometry() {
     $find = FALSE;
     $geometry = $this->wkt_generator->WktGenerateGeometry();
-    $patterns = array(
+    $patterns = [
       $this->point_regex,
       $this->multipoint_regex,
       $this->linestring_regex,
       $this->multilinestring_regex,
       $this->polygon_regex,
       $this->multipolygon_regex,
-    );
+    ];
 
     foreach ($patterns as $pattern) {
       if (preg_match($pattern, $geometry)) {

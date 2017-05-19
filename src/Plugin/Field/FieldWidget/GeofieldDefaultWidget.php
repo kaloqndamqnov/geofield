@@ -27,10 +27,10 @@ class GeofieldDefaultWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element += array(
+    $element += [
       '#type' => 'textarea',
       '#default_value' => $items[$delta]->value ?: NULL,
-    );
-    return array('value' => $element);
+    ];
+    return ['value' => $element];
   }
 }

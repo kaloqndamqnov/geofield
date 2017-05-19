@@ -23,7 +23,7 @@ class GeofieldItemTest extends FieldUnitTestBase {
    *
    * @var array
    */
-  public static $modules = array('geophp', 'geofield');
+  public static $modules = ['geophp', 'geofield'];
 
   /**
    * Field storage entity.
@@ -69,7 +69,7 @@ class GeofieldItemTest extends FieldUnitTestBase {
     if (!empty($geom)) {
       $centroid = $geom->getCentroid();
       $bounding = $geom->getBBox();
-      $computed = array();
+      $computed = [];
 
       $computed['geo_type'] = $geom->geometryType();
       $computed['lon'] = $centroid->getX();
@@ -99,19 +99,19 @@ class GeofieldItemTest extends FieldUnitTestBase {
    */
   protected function createField($entity_type) {
     // Create a field .
-    $this->fieldStorage = entity_create('field_storage_config', array(
+    $this->fieldStorage = entity_create('field_storage_config', [
       'field_name' => 'geofield_field',
       'entity_type' => $entity_type,
       'type' => 'geofield',
-      'settings' => array(
+      'settings' => [
         'backend' => 'geofield_backend_default',
-      )
-    ));
+      ]
+    ]);
     $this->fieldStorage->save();
-    $this->field = entity_create('field_config', array(
+    $this->field = entity_create('field_config', [
       'field_storage' => $this->fieldStorage,
       'bundle' => $entity_type,
-    ));
+    ]);
     $this->field->save();
   }
 

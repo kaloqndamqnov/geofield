@@ -30,7 +30,7 @@ class GeofieldLatLon extends ProcessPluginBase {
       return NULL;
      }
 
-    $lonlat = \Drupal::service('geofield.wkt_generator')->WktBuildPoint(array($lon, $lat));
+    $lonlat = \Drupal::service('geofield.wkt_generator')->WktBuildPoint([$lon, $lat]);
 
     return $lonlat;
   }

@@ -28,9 +28,9 @@ class GeofieldDefaultFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'output_format' => 'wkt'
-    );
+    ];
   }
 
   /**
@@ -42,13 +42,13 @@ class GeofieldDefaultFormatter extends FormatterBase {
     $options = \Drupal::service('geofield.geophp')->getAdapterMap();
     unset($options['google_geocode']);
 
-    $elements['output_format'] = array(
+    $elements['output_format'] = [
       '#title' => $this->t('Output Format'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('output_format'),
       '#options' => $options,
       '#required' => TRUE,
-    );
+    ];
     return $elements;
   }
 
@@ -57,8 +57,8 @@ class GeofieldDefaultFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $formatOptions = \Drupal::service('geofield.geophp')->getAdapterMap();
-    $summary = array();
-    $summary[] = $this->t('Geospatial output format: @format', array('@format' => $formatOptions[$this->getSetting('output_format')]));
+    $summary = [];
+    $summary[] = $this->t('Geospatial output format: @format', ['@format' => $formatOptions[$this->getSetting('output_format')]]);
     return $summary;
   }
 
@@ -66,13 +66,13 @@ class GeofieldDefaultFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
     $geophp = \Drupal::service('geofield.geophp');
 
     foreach ($items as $delta => $item) {
       $geom = $geophp->load($item->value);
       $output = $geom ? $geom->out($this->getSetting('output_format')) : '';
-      $elements[$delta] = array('#markup' => $output);
+      $elements[$delta] = ['#markup' => $output];
     }
 
     return $elements;
