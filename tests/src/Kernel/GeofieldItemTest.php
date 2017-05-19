@@ -1,29 +1,26 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Tests\GeofieldItemTest.
- */
-
-namespace Drupal\geofield\Tests;
+namespace Drupal\Tests\geofield\Kernel;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
-use Drupal\field\Tests\FieldUnitTestBase;
-
+use Drupal\entity_test\Entity\EntityTest;
+use Drupal\Tests\field\Kernel\FieldKernelTestBase;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
 /**
  * Tests using entity fields of the geofield field type.
  *
  * @group geofield
  */
-class GeofieldItemTest extends FieldUnitTestBase {
+class GeofieldItemTest extends FieldKernelTestBase {
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = ['geophp', 'geofield'];
+  public static $modules = ['geofield'];
 
   /**
    * Field storage entity.
@@ -54,15 +51,16 @@ class GeofieldItemTest extends FieldUnitTestBase {
     $this->createField($entity_type);
 
     // Create an entity with a random geofield field.
-    $entity = entity_create($entity_type);
+    $entity = EntityTest::create();
     $entity->geofield_field->value = $value = \Drupal::service('geofield.wkt_generator')->WktGenerateGeometry();
     $entity->name->value = $this->randomMachineName();
     $entity->save();
 
-    $entity = entity_load($entity_type, $entity->id());
+
+    $entity = EntityTest::load($entity->id());
     $this->assertTrue($entity->geofield_field instanceof FieldItemListInterface, 'Field implements interface.');
     $this->assertTrue($entity->geofield_field[0] instanceof FieldItemInterface, 'Field item implements interface.');
-    $this->assertEqual($entity->geofield_field->value, $value);
+    $this->assertEquals($entity->geofield_field->value, $value);
 
     // Test computed values.
     $geom = \Drupal::service('geofield.geophp')->load($value);
@@ -81,12 +79,12 @@ class GeofieldItemTest extends FieldUnitTestBase {
       $computed['geohash'] = $geom->out('geohash');
 
       foreach ($computed as $index => $computed_value) {
-        $this->assertEqual($entity->geofield_field->{$index}, $computed_value);
+        $this->assertEquals($entity->geofield_field->{$index}, $computed_value);
       }
     }
 
     // Test the generateSampleValue() method.
-    $entity = entity_create($entity_type);
+    $entity = EntityTest::create();
     $entity->geofield_field->generateSampleItems();
     $this->entityValidateAndSave($entity);
   }
@@ -98,8 +96,7 @@ class GeofieldItemTest extends FieldUnitTestBase {
    *   Entity type for which the field should be created.
    */
   protected function createField($entity_type) {
-    // Create a field .
-    $this->fieldStorage = entity_create('field_storage_config', [
+    $this->fieldStorage = FieldStorageConfig::create([
       'field_name' => 'geofield_field',
       'entity_type' => $entity_type,
       'type' => 'geofield',
@@ -108,9 +105,12 @@ class GeofieldItemTest extends FieldUnitTestBase {
       ]
     ]);
     $this->fieldStorage->save();
-    $this->field = entity_create('field_config', [
+
+    $this->field = FieldConfig::create([
       'field_storage' => $this->fieldStorage,
       'bundle' => $entity_type,
+      'description' => 'Description for geofield_field',
+      'required' => TRUE,
     ]);
     $this->field->save();
   }

@@ -1,21 +1,18 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Tests\GeofieldFormatterTest.
- */
+namespace Drupal\Tests\geofield\Kernel;
 
-namespace Drupal\geofield\Tests;
-
-use Drupal\filter\Entity\FilterFormat;
-use Drupal\system\Tests\Entity\EntityUnitTestBase;
+use Drupal\entity_test\Entity\EntityTest;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
  * Tests the geofield formatters functionality.
  *
  * @group geofield
  */
-class GeofieldFormatterTest extends EntityUnitTestBase {
+class GeofieldFormatterTest extends EntityKernelTestBase {
 
   /**
    * The entity type used in this test.
@@ -36,7 +33,7 @@ class GeofieldFormatterTest extends EntityUnitTestBase {
    *
    * @var array
    */
-  public static $modules = array('geophp', 'geofield');
+  public static $modules = ['geofield'];
 
   /**
    * {@inheritdoc}
@@ -44,15 +41,15 @@ class GeofieldFormatterTest extends EntityUnitTestBase {
   protected function setUp() {
     parent::setUp();
 
-    entity_create('field_storage_config', [
+    FieldStorageConfig::create([
       'field_name' => 'geofield',
       'entity_type' => $this->entityType,
       'type' => 'geofield',
       'settings' => [
         'backend' => 'geofield_backend_default',
-      ],
-    ])->save();
-    entity_create('field_config', [
+      ]])->save();
+
+    FieldConfig::create([
       'entity_type' => $this->entityType,
       'bundle' => $this->bundle,
       'field_name' => 'geofield',
@@ -65,17 +62,17 @@ class GeofieldFormatterTest extends EntityUnitTestBase {
    */
   public function testFormatters() {
     // Create the entity to be referenced.
-    $entity = entity_create($this->entityType, ['name' => $this->randomMachineName()]);
+    $entity = EntityTest::create(['name' => $this->randomMachineName()]);
     $value = \Drupal::service('geofield.wkt_generator')->WktGenerateGeometry();
     $entity->geofield = [
       'value' => $value,
     ];
     $entity->save();
 
-      // Verify the geofield field formatter's render array.
-      $build = $entity->get('geofield')->view(['type' => 'geofield_default']);
-      drupal_render($build[0]);
-      $this->assertEqual($build[0]['#markup'], $value);
+    // Verify the geofield field formatter's render array.
+    $build = $entity->get('geofield')->view(['type' => 'geofield_default']);
+    \Drupal::service('renderer')->renderRoot($build[0]);
+    $this->assertEquals($build[0]['#markup'], $value);
   }
 
 }

@@ -1,13 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Tests\WktGeneratorTest.
- */
+namespace Drupal\Tests\geofield\Kernel;
 
-namespace Drupal\geofield\Tests;
-
-use Drupal\simpletest\KernelTestBase;
+use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Tests WktGenerator.
