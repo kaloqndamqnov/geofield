@@ -13,12 +13,12 @@ class GeoConstraintValidator extends ConstraintValidator {
   /**
    * {@inheritdoc}
    */
-  public function validate($items, Constraint $constraint) {
-    if (isset($items)) {
+  public function validate($value, Constraint $constraint) {
+    if (isset($value)) {
       $valid_geometry = TRUE;
 
       try {
-        if (!\Drupal::service('geofield.geophp')->load($items, 'wkt')) {
+        if (!\Drupal::service('geofield.geophp')->load($value, 'wkt')) {
           $valid_geometry = FALSE;
         }
       }
@@ -27,7 +27,7 @@ class GeoConstraintValidator extends ConstraintValidator {
       }
 
       if (!$valid_geometry) {
-        $this->context->addViolation($constraint->message, array('@value' => $items));
+        $this->context->addViolation($constraint->message, array('@value' => $value));
       }
     }
   }
