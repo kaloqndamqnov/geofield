@@ -27,7 +27,7 @@ class GeoConstraintValidator extends ConstraintValidator {
       }
 
       if (!$valid_geometry) {
-        $this->context->addViolation($constraint->message, array('@value' => $value));
+        $this->context->addViolation($constraint->message, ['@value' => $value]);
       }
     }
   }
