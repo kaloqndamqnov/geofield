@@ -7,6 +7,7 @@
 
 namespace Drupal\geofield\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -72,7 +73,7 @@ class GeofieldDefaultFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $geom = $geophp->load($item->value);
       $output = $geom ? $geom->out($this->getSetting('output_format')) : '';
-      $elements[$delta] = ['#markup' => $output];
+      $elements[$delta] = ['#markup' => Html::escape($output)];
     }
 
     return $elements;
