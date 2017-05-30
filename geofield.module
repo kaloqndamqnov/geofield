@@ -91,6 +91,11 @@ function geofield_theme() {
     'geofield_proximity' => [
       'render element' => 'element',
     ],
+    'geofield_dms' => [
+      'variables' => [
+        'components' => [],
+      ],
+    ],
   ];
 }
 

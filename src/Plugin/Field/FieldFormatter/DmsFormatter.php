@@ -1,31 +1,24 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Plugin\Field\FieldFormatter\GeofieldDefaultFormatter.
- */
-
 namespace Drupal\geofield\Plugin\Field\FieldFormatter;
-
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\geofield\GeoPHP\GeoPHPInterface;
+use Drupal\geofield\DmsConverter;
 
 /**
- * Plugin implementation of the 'geofield_default' formatter.
+ * Plugin implementation of the 'geofield_dms' formatter.
  *
  * @FieldFormatter(
- *   id = "geofield_default",
- *   label = @Translation("Raw Output"),
+ *   id = "geofield_dms",
+ *   label = @Translation("DMS format"),
  *   field_types = {
  *     "geofield"
  *   }
  * )
  */
-class GeofieldDefaultFormatter extends FormatterBase {
+class DmsFormatter extends FormatterBase {
 
   /**
    * @var \Drupal\geofield\GeoPHP\GeoPHPInterface
@@ -44,7 +37,7 @@ class GeofieldDefaultFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-      'output_format' => 'wkt'
+      'output_format' => 'dms'
     ];
   }
 
@@ -54,14 +47,11 @@ class GeofieldDefaultFormatter extends FormatterBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
 
-    $options = $this->geophp->getAdapterMap();
-    unset($options['google_geocode']);
-
     $elements['output_format'] = [
       '#title' => $this->t('Output Format'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('output_format'),
-      '#options' => $options,
+      '#options' => $this->formatOptions(),
       '#required' => TRUE,
     ];
     return $elements;
@@ -71,9 +61,7 @@ class GeofieldDefaultFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $formatOptions = $this->geophp->getAdapterMap();
-    $summary = [];
-    $summary[] = $this->t('Geospatial output format: @format', ['@format' => $formatOptions[$this->getSetting('output_format')]]);
+    $summary[] = $this->t('Geospatial output format: @format', ['@format' => $this->formatOptions()[$this->getSetting('output_format')]]);
     return $summary;
   }
 
@@ -84,12 +72,40 @@ class GeofieldDefaultFormatter extends FormatterBase {
     $elements = [];
 
     foreach ($items as $delta => $item) {
+      $output = ['#markup' => ''];
       $geom = $this->geophp->load($item->value);
-      $output = $geom ? $geom->out($this->getSetting('output_format')) : '';
-      $elements[$delta] = ['#markup' => Html::escape($output)];
+      if ($geom && $geom->getGeomType() == 'Point') {
+        $dms_point = DmsConverter::DecimalToDms($geom);
+        $components = [];
+        foreach(['lat', 'lon'] as $component) {
+          $item = $dms_point->get($component);
+          if ($this->getSetting('output_format') == 'dm') {
+            $item['minutes'] = number_format($item['minutes'] + ($item['seconds'] / 60), 5);
+            $item['seconds'] = NULL;
+          }
+          $components[$component] = $item;
+        }
+        $output = [
+          '#theme' => 'geofield_dms',
+          '#components' => $components,
+        ];
+      }
+      $elements[$delta] = $output;
     }
 
     return $elements;
   }
 
+  /**
+   * Helper function to get the formatter settings options.
+   *
+   * @return array
+   *  The formatter settings options.
+   */
+  protected function formatOptions() {
+    return [
+      'dms' => $this->t('DMS Format (17° 46\'11")'),
+      'dm' => $this->t('DM Format (17° 46.19214\')'),
+    ];
+  }
 }
