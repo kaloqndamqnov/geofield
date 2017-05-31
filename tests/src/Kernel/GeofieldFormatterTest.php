@@ -170,14 +170,14 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
         "<span class=\"dms dms-lat\">
     42°
     13'
-          32\"
+          33\"
         N
   </span>
       ,
     <span class=\"dms dms-lon\">
     2°
     6'
-          7\"
+          8\"
         W
   </span>"
       ],
@@ -186,13 +186,13 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
         'dm',
         "<span class=\"dms dms-lat\">
     42°
-    13.53333'
+    13.55000'
         N
   </span>
       ,
     <span class=\"dms dms-lon\">
     2°
-    6.11667'
+    6.13333'
         W
   </span>"
       ],

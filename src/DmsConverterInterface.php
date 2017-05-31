@@ -12,7 +12,7 @@ interface DmsConverterInterface {
    * @return array
    *   The equivalent Decimal Point array.
    */
-  public static function DmsToDecimal(DmsPoint $point);
+  public static function dmsToDecimal(DmsPoint $point);
 
   /**
    * @param float $lon
@@ -23,6 +23,6 @@ interface DmsConverterInterface {
    * @return \Drupal\geofield\DmsPoint
    *   The equivalent DMS Point object.
    */
-  public static function DecimalToDms($lon, $lat);
+  public static function decimalToDms($lon, $lat);
 
 }

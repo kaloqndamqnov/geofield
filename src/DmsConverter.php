@@ -10,7 +10,7 @@ class DmsConverter implements DmsConverterInterface {
   /**
    * {@inheritdoc}
    */
-  public static function DmsToDecimal(DmsPoint $point) {
+  public static function dmsToDecimal(DmsPoint $point) {
     $lon_data = $point->getLon();
     $lat_data = $point->getLat();
     $lon = $lon_data['degrees'] + ($lon_data['minutes'] / 60) + ($lon_data['seconds'] / 3600);
@@ -25,7 +25,7 @@ class DmsConverter implements DmsConverterInterface {
   /**
    * {@inheritdoc}
    */
-  public static function DecimalToDms($lon, $lat) {
+  public static function decimalToDms($lon, $lat) {
     $latDirection = $lat < 0 ? 'S': 'N';
     $lonDirection = $lon < 0 ? 'W': 'E';
 

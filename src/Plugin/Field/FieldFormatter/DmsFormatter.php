@@ -75,7 +75,7 @@ class DmsFormatter extends FormatterBase {
       $output = ['#markup' => ''];
       $geom = $this->geophp->load($item->value);
       if ($geom && $geom->getGeomType() == 'Point') {
-        $dms_point = DmsConverter::DecimalToDms($geom);
+        $dms_point = DmsConverter::decimalToDms($geom->x(), $geom->y());
         $components = [];
         foreach(['lat', 'lon'] as $component) {
           $item = $dms_point->get($component);
