@@ -6,7 +6,7 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\field\Tests\FieldTestBase;
+use Drupal\Tests\field\Functional\FieldTestBase;
 
 /**
  * Tests the Geofield widgets.
@@ -36,6 +36,13 @@ class GeofieldWidgetTest extends FieldTestBase {
    */
   protected $field;
 
+  /**
+   * The web assert object.
+   *
+   * @var \Drupal\Tests\WebAssert
+   */
+  protected $assertSession;
+
   protected function setUp() {
     parent::setUp();
 
@@ -56,6 +63,8 @@ class GeofieldWidgetTest extends FieldTestBase {
       'required' => TRUE,
     ]);
     $this->field->save();
+
+    $this->assertSession = $this->assertSession();
 
     // Create a web user.
     $this->drupalLogin($this->drupalCreateUser(['view test entity', 'administer entity_test content']));
@@ -80,7 +89,7 @@ class GeofieldWidgetTest extends FieldTestBase {
 
     // With no field data, no buttons are checked.
     $this->drupalGet('entity_test/manage/' . $entity->id() . '/edit');
-    $this->assertText('geofield_field');
+    $this->assertSession->pageTextContains('geofield_field');
 
     $edit = [
       'name[0][value]' => 'Arnedo',
@@ -96,7 +105,7 @@ class GeofieldWidgetTest extends FieldTestBase {
       'geofield_field[0][value]' => $random,
     ];
     $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertText('"' . $random . '" is not a valid geospatial content.');
+    $this->assertSession->pageTextContains('"' . $random . '" is not a valid geospatial content.');
   }
 
   /**
@@ -118,9 +127,9 @@ class GeofieldWidgetTest extends FieldTestBase {
 
     // Check basic data.
     $this->drupalGet('entity_test/manage/' . $entity->id() . '/edit');
-    $this->assertText('geofield_field');
-    $this->assertText('Latitude');
-    $this->assertText('Longitude');
+    $this->assertSession->pageTextContains('geofield_field');
+    $this->assertSession->pageTextContains('Latitude');
+    $this->assertSession->pageTextContains('Longitude');
 
     // Add a valid point.
     $edit = [
@@ -139,8 +148,8 @@ class GeofieldWidgetTest extends FieldTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, t('Save'));
 
-    $this->assertText('geofield_field: Latitude is out of bounds.');
-    $this->assertText('geofield_field: Longitude is out of bounds.');
+    $this->assertSession->pageTextContains('geofield_field: Latitude is out of bounds.');
+    $this->assertSession->pageTextContains('geofield_field: Longitude is out of bounds.');
 
     // Add non numeric values.
     $edit = [
@@ -150,8 +159,8 @@ class GeofieldWidgetTest extends FieldTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, t('Save'));
 
-    $this->assertText('geofield_field: Latitude is not numeric.');
-    $this->assertText('geofield_field: Longitude is not numeric.');
+    $this->assertSession->pageTextContains('geofield_field: Latitude is not numeric.');
+    $this->assertSession->pageTextContains('geofield_field: Longitude is not numeric.');
   }
 
   /**
@@ -173,11 +182,11 @@ class GeofieldWidgetTest extends FieldTestBase {
 
     // Check basic data.
     $this->drupalGet('entity_test/manage/' . $entity->id() . '/edit');
-    $this->assertText('geofield_field');
-    $this->assertText('Top');
-    $this->assertText('Right');
-    $this->assertText('Bottom');
-    $this->assertText('Left');
+    $this->assertSession->pageTextContains('geofield_field');
+    $this->assertSession->pageTextContains('Top');
+    $this->assertSession->pageTextContains('Right');
+    $this->assertSession->pageTextContains('Bottom');
+    $this->assertSession->pageTextContains('Left');
 
     // Add valid bounds.
     $edit = [
@@ -199,9 +208,9 @@ class GeofieldWidgetTest extends FieldTestBase {
       'geofield_field[0][value][left]' => 750,
     ];
     $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertText('geofield_field: Right is not numeric.');
-    $this->assertText('geofield_field: Left is out of bounds.');
-    $this->assertText('geofield_field: Top must be greater than Bottom.');
+    $this->assertSession->pageTextContains('geofield_field: Right is not numeric.');
+    $this->assertSession->pageTextContains('geofield_field: Left is out of bounds.');
+    $this->assertSession->pageTextContains('geofield_field: Top must be greater than Bottom.');
   }
 
   /**
@@ -223,7 +232,7 @@ class GeofieldWidgetTest extends FieldTestBase {
 
     // Check basic data.
     $this->drupalGet('entity_test/manage/' . $entity->id() . '/edit');
-    $this->assertText('geofield_field');
+    $this->assertSession->pageTextContains('geofield_field');
 
     // Add valid data.
     $edit = [
@@ -254,9 +263,9 @@ class GeofieldWidgetTest extends FieldTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, t('Save'));
 
-    $this->assertText('geofield_field must be lower than or equal to 59.');
-    $this->assertText('geofield_field is not a valid number.');
-    $this->assertText('geofield_field must be a number.');
+    $this->assertSession->pageTextContains('geofield_field must be lower than or equal to 59.');
+    $this->assertSession->pageTextContains('geofield_field is not a valid number.');
+    $this->assertSession->pageTextContains('geofield_field must be a number.');
 
   }
 
