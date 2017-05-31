@@ -15,10 +15,10 @@
 #}
 
 {% for item, component in components %}
-  <span>
+  <span class="dms dms-{{ item }}">
     {{ component['degrees'] }}°
     {{ component['minutes'] }}'
-    {% if component['seconds'] %}
+    {% if component.seconds is not empty %}
       {{ component['seconds'] }}"
     {% endif %}
     {{ component['orientation'] }}
