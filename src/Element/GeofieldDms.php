@@ -49,9 +49,8 @@ class GeofieldDms extends FormElement {
     $element['#tree'] = TRUE;
     $element['#input'] = TRUE;
     $default_value = NULL;
-
     if (isset($element['#default_value']['lon']) && isset($element['#default_value']['lat'])) {
-      $default_value = DmsConverter::DecimalToDms(new \Point($element['#default_value']['lon'], $element['#default_value']['lat']));
+      $default_value = DmsConverter::DecimalToDms($element['#default_value']['lon'], $element['#default_value']['lat']);
     }
 
     $options = [

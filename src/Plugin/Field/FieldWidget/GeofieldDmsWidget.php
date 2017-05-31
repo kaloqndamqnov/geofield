@@ -45,7 +45,7 @@ class GeofieldDmsWidget extends WidgetBase {
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $delta => $value) {
       $components = DmsConverter::DmsToDecimal(new DmsPoint($value['value']['lon'], $value['value']['lat']));
-      $values[$delta]['value'] = $components->asText();
+      $values[$delta]['value'] = \Drupal::service('geofield.wkt_generator')->WktGeneratePoint($components);
     }
 
     return $values;

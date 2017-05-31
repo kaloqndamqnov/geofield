@@ -19,16 +19,13 @@ class DmsConverter implements DmsConverterInterface {
     $lon = ($lon_data['orientation'] == 'W') ? (-1 * $lon) : $lon;
     $lat = ($lat_data['orientation'] == 'S') ? (-1 * $lat) : $lat;
 
-    return new \Point($lon, $lat);
+    return [$lon, $lat];
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function DecimalToDms(\Point $point) {
-
-    $lon = $point->x();
-    $lat = $point->y();
+  public static function DecimalToDms($lon, $lat) {
     $latDirection = $lat < 0 ? 'S': 'N';
     $lonDirection = $lon < 0 ? 'W': 'E';
 
@@ -44,8 +41,8 @@ class DmsConverter implements DmsConverterInterface {
     $latDecimal = ($latDecimal - $latMinutes) * 60;
     $lonDecimal = ($lonDecimal - $lonMinutes) * 60;
 
-    $latSeconds = floor($latDecimal);
-    $lonSeconds = floor($lonDecimal);
+    $latSeconds = round($latDecimal);
+    $lonSeconds = round($lonDecimal);
 
     return new DmsPoint([
         'orientation' => $lonDirection,

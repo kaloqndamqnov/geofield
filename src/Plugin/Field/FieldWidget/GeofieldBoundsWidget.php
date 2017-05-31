@@ -15,7 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
  * Plugin implementation of the 'geofield_bounds' widget.
  *
  * @FieldWidget(
- *   id = "geofield_Bounds",
+ *   id = "geofield_bounds",
  *   label = @Translation("Bounding box"),
  *   field_types = {
  *     "geofield"
@@ -55,7 +55,7 @@ class GeofieldBoundsWidget extends WidgetBase {
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $delta => $value) {
       foreach ($this->components as $component) {
-        if (empty($value['value'][$component]) && !is_numeric($value['value'][$component])) {
+        if (empty($value['value'][$component]) || !is_numeric($value['value'][$component])) {
           $values[$delta]['value'] = '';
           continue 2;
         }

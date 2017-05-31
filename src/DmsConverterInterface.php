@@ -9,17 +9,20 @@ interface DmsConverterInterface {
    * @param \Drupal\geofield\DmsPoint $point
    *   The DMS Point to transform.
    *
-   * @return \Point
-   *   The equivalent Decimal Point object.
+   * @return array
+   *   The equivalent Decimal Point array.
    */
   public static function DmsToDecimal(DmsPoint $point);
 
   /**
-   * @param \Point $point
-   *   The Decimal Point to transform.
+   * @param float $lon
+   *   The Decimal Point to transform longitude.
+   * @param float $lat
+   *   The Decimal Point to transform latitude.
    *
    * @return \Drupal\geofield\DmsPoint
    *   The equivalent DMS Point object.
    */
-  public static function DecimalToDms(\Point $point);
+  public static function DecimalToDms($lon, $lat);
+
 }
