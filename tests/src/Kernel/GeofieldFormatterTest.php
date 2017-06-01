@@ -72,15 +72,15 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     // Verify the geofield field formatter's render array.
     $build = $entity->get('geofield')->view(['type' => 'geofield_default']);
     \Drupal::service('renderer')->renderRoot($build[0]);
-    $this->assertEquals($build[0]['#markup'], $value);
+    $this->assertEquals($value, $build[0]['#markup']);
   }
 
   /**
-   * Tests geofield field DMS formatter.
+   * Tests geofield field LatLon formatter.
    *
-   * @dataProvider dmsFormatterProvider
+   * @dataProvider latLonFormatterProvider
    */
-  public function testDmsFormatter($point, $format, $expected_value) {
+  public function testLatLonFormatter($point, $format, $expected_value) {
     // Create the entity to be referenced.
     $entity = EntityTest::create(['name' => $this->randomMachineName()]);
 
@@ -90,15 +90,15 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     $entity->save();
 
     // Verify the geofield field formatter's render array.
-    $build = $entity->get('geofield')->view(['type' => 'geofield_dms', 'settings' => ['output_format' => $format]]);
+    $build = $entity->get('geofield')->view(['type' => 'geofield_latlon', 'settings' => ['output_format' => $format]]);
     \Drupal::service('renderer')->renderRoot($build[0]);
-    $this->assertEquals(trim($build[0]['#markup']), $expected_value);
+    $this->assertEquals($expected_value, trim($build[0]['#markup']));
   }
 
   /**
-   * Provides test data for testGeoConstraint().
+   * Provides test data for testLatLonFormatter().
    */
-  public function dmsFormatterProvider() {
+  public function latLonFormatterProvider() {
     return [
       'DMS Value' => [
         'POINT (40 -3)',
@@ -132,6 +132,11 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
         E
   </span>"
       ],
+      'LatLon Value' => [
+        'POINT (40 -3)',
+        'decimal',
+        '<span class="latlon latlon-lat">-3</span>, <span class="latlon latlon-lon">40</span>'
+      ],
       'DMS Value long' => [
         'POINT (85.24587 45.625358)',
         'dms',
@@ -163,6 +168,11 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     14.75000'
         E
   </span>"
+      ],
+      'LatLon Value long' => [
+        'POINT (85.24587 45.625358)',
+        'decimal',
+        '<span class="latlon latlon-lat">45.625358</span>, <span class="latlon latlon-lon">85.24587</span>',
       ],
       'DMS Arnedo' => [
         'POINT (-2.1021 42.2257)',
@@ -196,6 +206,11 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
         W
   </span>"
       ],
+      'Decimal Arnedo' => [
+        'POINT (-2.1021 42.2257)',
+        'decimal',
+        '<span class="latlon latlon-lat">42.2257</span>, <span class="latlon latlon-lon">-2.1021</span>'
+      ]
     ];
   }
 

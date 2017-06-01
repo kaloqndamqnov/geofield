@@ -96,6 +96,12 @@ function geofield_theme() {
         'components' => [],
       ],
     ],
+    'geofield_latlon' => [
+      'variables' => [
+        'lat' => 0,
+        'lon' => 0,
+      ],
+    ],
   ];
 }
 

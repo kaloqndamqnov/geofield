@@ -11,14 +11,14 @@ use Drupal\geofield\DmsConverter;
  * Plugin implementation of the 'geofield_dms' formatter.
  *
  * @FieldFormatter(
- *   id = "geofield_dms",
- *   label = @Translation("DMS format"),
+ *   id = "geofield_latlon",
+ *   label = @Translation("Lat/Lon"),
  *   field_types = {
  *     "geofield"
  *   }
  * )
  */
-class DmsFormatter extends FormatterBase {
+class LatLonFormatter extends FormatterBase {
 
   /**
    * @var \Drupal\geofield\GeoPHP\GeoPHPInterface
@@ -37,7 +37,7 @@ class DmsFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-      'output_format' => 'dms'
+      'output_format' => 'decimal'
     ];
   }
 
@@ -75,20 +75,20 @@ class DmsFormatter extends FormatterBase {
       $output = ['#markup' => ''];
       $geom = $this->geophp->load($item->value);
       if ($geom && $geom->getGeomType() == 'Point') {
-        $dms_point = DmsConverter::decimalToDms($geom->x(), $geom->y());
-        $components = [];
-        foreach(['lat', 'lon'] as $component) {
-          $item = $dms_point->get($component);
-          if ($this->getSetting('output_format') == 'dm') {
-            $item['minutes'] = number_format($item['minutes'] + ($item['seconds'] / 60), 5);
-            $item['seconds'] = NULL;
-          }
-          $components[$component] = $item;
+        if ($this->getSetting('output_format') == 'decimal') {
+          $output = [
+            '#theme' => 'geofield_latlon',
+            '#lat' => $geom->y(),
+            '#lon' => $geom->x(),
+          ];
         }
-        $output = [
-          '#theme' => 'geofield_dms',
-          '#components' => $components,
-        ];
+        else {
+          $components = $this->getDmsComponents($geom);
+          $output = [
+            '#theme' => 'geofield_dms',
+            '#components' => $components,
+          ];
+        }
       }
       $elements[$delta] = $output;
     }
@@ -104,8 +104,33 @@ class DmsFormatter extends FormatterBase {
    */
   protected function formatOptions() {
     return [
-      'dms' => $this->t('DMS Format (17° 46\'11")'),
-      'dm' => $this->t('DM Format (17° 46.19214\')'),
+      'decimal' => $this->t('Decimal Format (17.76972)'),
+      'dms' => $this->t('DMS Format (17° 46\' 11" N)'),
+      'dm' => $this->t('DM Format (17° 46.19214\' N)'),
     ];
   }
+
+  /**
+   * Generates the DMS expected components given a Point.
+   *
+   * @param \Point $point
+   *   The point to represent as DMS.
+   *
+   * @return array
+   *   The DMS LatLon components
+   */
+  protected function getDmsComponents($point) {
+    $dms_point = DmsConverter::decimalToDms($point->x(), $point->y());
+    $components = [];
+    foreach (['lat', 'lon'] as $component) {
+      $item = $dms_point->get($component);
+      if ($this->getSetting('output_format') == 'dm') {
+        $item['minutes'] = number_format($item['minutes'] + ($item['seconds'] / 60), 5);
+        $item['seconds'] = NULL;
+      }
+      $components[$component] = $item;
+    }
+    return $components;
+  }
+
 }
