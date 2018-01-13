@@ -8,9 +8,6 @@ module can can store data as Latitude and Longitude, Bounding Box and Well
 Known Text (WKT) and it supports all types of geographical data: points,
 lines, polygons, multi-types etc.
 
-Further documentation on Geofield can be found at the [Geofield Drupal.org Community
-Documentation page](http://drupal.org/node/1089574)
-
 INSTALL
 -------
 
