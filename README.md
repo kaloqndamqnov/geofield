@@ -21,7 +21,7 @@ which will also download , which will also download the required GeoPHP library
 dependency. It means simply running the following command from your project root
 (where the main composer.json file is sited):
 
-__$ composer require 'drupal/geofield_map'__
+__$ composer require drupal/geofield__
 
 and then enable the module in the usual way, from the extend/modules backend
 interfaces or via drush with the following command:
