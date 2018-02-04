@@ -52,10 +52,8 @@ Drupal 8, based on Geofield
 
 CREDITS
 -------
-Original author:  Tristan O'Neil
-Contributors :    Alex Barth, Jeff Miccolis, Young Hahn, Tom MacWright,
-                  Patrick Hayes, Dave Tarc, Nikhil Trivedi, Marek Sotak,
-                  Khalid Jebbari, Brandon Morrison, David Peterson, Italo Mairo
+Original author (Drupal 7):  Tristan O'Neil
+Contributors (Drupal 8):    Brandon Morrison, Pablo López, Italo Mairo
 
 API NOTES
 ---------
